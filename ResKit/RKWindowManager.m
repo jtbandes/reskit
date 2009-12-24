@@ -13,6 +13,11 @@
 static RKWindowManager *sharedWindowManager = nil;
 
 #pragma mark -
+#pragma mark Setup
+
+
+
+#pragma mark -
 #pragma mark Singleton pattern methods
 
 + (RKWindowManager *)sharedManager {

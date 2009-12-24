@@ -10,20 +10,55 @@
 		164B375A10E367ED0075BE63 /* RKWindowManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 164B375810E367ED0075BE63 /* RKWindowManager.h */; };
 		164B375B10E367ED0075BE63 /* RKWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 164B375910E367ED0075BE63 /* RKWindowManager.m */; };
 		164B375D10E3680A0075BE63 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 164B375C10E3680A0075BE63 /* UIKit.framework */; };
+		164B380D10E370480075BE63 /* libResKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC07E0554694100DB518D /* libResKit.a */; };
+		164B381110E370950075BE63 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 164B375C10E3680A0075BE63 /* UIKit.framework */; };
+		164B381310E3709C0075BE63 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
+		164B381D10E370D60075BE63 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 164B381C10E370D60075BE63 /* MainWindow.xib */; };
+		164B382610E372080075BE63 /* RKDemoAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 164B382510E372080075BE63 /* RKDemoAppDelegate.m */; };
+		164B382F10E372960075BE63 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 164B382E10E372960075BE63 /* main.m */; };
+		164B389910E3731C0075BE63 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 164B389810E3731C0075BE63 /* MapKit.framework */; };
 		AA747D9F0F9514B9006C5449 /* ResKit_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* ResKit_Prefix.pch */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		164B382010E370F70075BE63 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D /* ResKit */;
+			remoteInfo = ResKit;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		164B375810E367ED0075BE63 /* RKWindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKWindowManager.h; sourceTree = "<group>"; };
 		164B375910E367ED0075BE63 /* RKWindowManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKWindowManager.m; sourceTree = "<group>"; };
 		164B375C10E3680A0075BE63 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		164B380410E370330075BE63 /* ResKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ResKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		164B380610E370330075BE63 /* ResKitDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ResKitDemo-Info.plist"; sourceTree = "<group>"; };
+		164B381C10E370D60075BE63 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
+		164B382410E372080075BE63 /* RKDemoAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKDemoAppDelegate.h; sourceTree = "<group>"; };
+		164B382510E372080075BE63 /* RKDemoAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKDemoAppDelegate.m; sourceTree = "<group>"; };
+		164B382E10E372960075BE63 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		164B389810E3731C0075BE63 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		AA747D9E0F9514B9006C5449 /* ResKit_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResKit_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2AAC07E0554694100DB518D /* libResKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libResKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		164B380210E370330075BE63 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				164B380D10E370480075BE63 /* libResKit.a in Frameworks */,
+				164B381110E370950075BE63 /* UIKit.framework in Frameworks */,
+				164B381310E3709C0075BE63 /* Foundation.framework in Frameworks */,
+				164B389910E3731C0075BE63 /* MapKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D2AAC07C0554694100DB518D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -40,6 +75,7 @@
 			isa = PBXGroup;
 			children = (
 				D2AAC07E0554694100DB518D /* libResKit.a */,
+				164B380410E370330075BE63 /* ResKitDemo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -47,6 +83,7 @@
 		0867D691FE84028FC02AAC07 /* ResKit */ = {
 			isa = PBXGroup;
 			children = (
+				164B380E10E370600075BE63 /* Demo App */,
 				08FB77AEFE84172EC02AAC07 /* Classes */,
 				32C88DFF0371C24200C91783 /* Other Sources */,
 				0867D69AFE84028FC02AAC07 /* Frameworks */,
@@ -73,6 +110,19 @@
 			name = Classes;
 			sourceTree = "<group>";
 		};
+		164B380E10E370600075BE63 /* Demo App */ = {
+			isa = PBXGroup;
+			children = (
+				164B380610E370330075BE63 /* ResKitDemo-Info.plist */,
+				164B381C10E370D60075BE63 /* MainWindow.xib */,
+				164B382E10E372960075BE63 /* main.m */,
+				164B382410E372080075BE63 /* RKDemoAppDelegate.h */,
+				164B382510E372080075BE63 /* RKDemoAppDelegate.m */,
+				164B389810E3731C0075BE63 /* MapKit.framework */,
+			);
+			name = "Demo App";
+			sourceTree = "<group>";
+		};
 		32C88DFF0371C24200C91783 /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -96,6 +146,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		164B380310E370330075BE63 /* ResKitDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 164B380910E370350075BE63 /* Build configuration list for PBXNativeTarget "ResKitDemo" */;
+			buildPhases = (
+				164B380010E370330075BE63 /* Resources */,
+				164B380110E370330075BE63 /* Sources */,
+				164B380210E370330075BE63 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				164B382110E370F70075BE63 /* PBXTargetDependency */,
+			);
+			name = ResKitDemo;
+			productName = ResKitDemo;
+			productReference = 164B380410E370330075BE63 /* ResKitDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
 		D2AAC07D0554694100DB518D /* ResKit */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "ResKit" */;
@@ -127,11 +195,32 @@
 			projectRoot = "";
 			targets = (
 				D2AAC07D0554694100DB518D /* ResKit */,
+				164B380310E370330075BE63 /* ResKitDemo */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		164B380010E370330075BE63 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				164B381D10E370D60075BE63 /* MainWindow.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		164B380110E370330075BE63 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				164B382610E372080075BE63 /* RKDemoAppDelegate.m in Sources */,
+				164B382F10E372960075BE63 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D2AAC07B0554694100DB518D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -142,7 +231,64 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		164B382110E370F70075BE63 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D2AAC07D0554694100DB518D /* ResKit */;
+			targetProxy = 164B382010E370F70075BE63 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		164B380710E370350075BE63 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/UIKit.framework/Headers/UIKit.h";
+				INFOPLIST_FILE = "ResKitDemo-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					UIKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = ResKitDemo;
+				SDKROOT = iphoneos3.1.2;
+			};
+			name = Debug;
+		};
+		164B380810E370350075BE63 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/UIKit.framework/Headers/UIKit.h";
+				INFOPLIST_FILE = "ResKitDemo-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					UIKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = ResKitDemo;
+				SDKROOT = iphoneos3.1.2;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		1DEB921F08733DC00010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -205,6 +351,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		164B380910E370350075BE63 /* Build configuration list for PBXNativeTarget "ResKitDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				164B380710E370350075BE63 /* Debug */,
+				164B380810E370350075BE63 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "ResKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface RKWindowManager : NSObject {
-
+	UIWindow *resWindow;
+	UIWindow *appWindow;
 }
 
 @end
