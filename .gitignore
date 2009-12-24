@@ -1,0 +1,5 @@
+.DS_Store
+build
+*.mode*v3
+*.perspective*v3
+*.pbxuser
