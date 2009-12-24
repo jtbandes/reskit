@@ -7,11 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		164B375A10E367ED0075BE63 /* RKWindowManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 164B375810E367ED0075BE63 /* RKWindowManager.h */; };
+		164B375B10E367ED0075BE63 /* RKWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 164B375910E367ED0075BE63 /* RKWindowManager.m */; };
+		164B375D10E3680A0075BE63 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 164B375C10E3680A0075BE63 /* UIKit.framework */; };
 		AA747D9F0F9514B9006C5449 /* ResKit_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* ResKit_Prefix.pch */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		164B375810E367ED0075BE63 /* RKWindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKWindowManager.h; sourceTree = "<group>"; };
+		164B375910E367ED0075BE63 /* RKWindowManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKWindowManager.m; sourceTree = "<group>"; };
+		164B375C10E3680A0075BE63 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		AA747D9E0F9514B9006C5449 /* ResKit_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResKit_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2AAC07E0554694100DB518D /* libResKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libResKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -23,6 +29,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */,
+				164B375D10E3680A0075BE63 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -51,6 +58,7 @@
 		0867D69AFE84028FC02AAC07 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				164B375C10E3680A0075BE63 /* UIKit.framework */,
 				AACBBE490F95108600F1A2B1 /* Foundation.framework */,
 			);
 			name = Frameworks;
@@ -59,6 +67,8 @@
 		08FB77AEFE84172EC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				164B375810E367ED0075BE63 /* RKWindowManager.h */,
+				164B375910E367ED0075BE63 /* RKWindowManager.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -79,6 +89,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA747D9F0F9514B9006C5449 /* ResKit_Prefix.pch in Headers */,
+				164B375A10E367ED0075BE63 /* RKWindowManager.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +136,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				164B375B10E367ED0075BE63 /* RKWindowManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
