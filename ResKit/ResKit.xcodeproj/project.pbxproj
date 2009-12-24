@@ -17,6 +17,9 @@
 		164B382610E372080075BE63 /* RKDemoAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 164B382510E372080075BE63 /* RKDemoAppDelegate.m */; };
 		164B382F10E372960075BE63 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 164B382E10E372960075BE63 /* main.m */; };
 		164B389910E3731C0075BE63 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 164B389810E3731C0075BE63 /* MapKit.framework */; };
+		164B38CD10E374C80075BE63 /* RKDemoMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 164B38CC10E374C80075BE63 /* RKDemoMainViewController.m */; };
+		164B396210E37D5B0075BE63 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 164B396110E37D5B0075BE63 /* CoreGraphics.framework */; };
+		164B39AC10E37E350075BE63 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 164B396110E37D5B0075BE63 /* CoreGraphics.framework */; };
 		AA747D9F0F9514B9006C5449 /* ResKit_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* ResKit_Prefix.pch */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 /* End PBXBuildFile section */
@@ -42,6 +45,9 @@
 		164B382510E372080075BE63 /* RKDemoAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKDemoAppDelegate.m; sourceTree = "<group>"; };
 		164B382E10E372960075BE63 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		164B389810E3731C0075BE63 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		164B38CB10E374C80075BE63 /* RKDemoMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKDemoMainViewController.h; sourceTree = "<group>"; };
+		164B38CC10E374C80075BE63 /* RKDemoMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKDemoMainViewController.m; sourceTree = "<group>"; };
+		164B396110E37D5B0075BE63 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		AA747D9E0F9514B9006C5449 /* ResKit_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResKit_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2AAC07E0554694100DB518D /* libResKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libResKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -56,6 +62,7 @@
 				164B381110E370950075BE63 /* UIKit.framework in Frameworks */,
 				164B381310E3709C0075BE63 /* Foundation.framework in Frameworks */,
 				164B389910E3731C0075BE63 /* MapKit.framework in Frameworks */,
+				164B39AC10E37E350075BE63 /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +72,7 @@
 			files = (
 				AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */,
 				164B375D10E3680A0075BE63 /* UIKit.framework in Frameworks */,
+				164B396210E37D5B0075BE63 /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,8 +103,9 @@
 		0867D69AFE84028FC02AAC07 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				164B375C10E3680A0075BE63 /* UIKit.framework */,
 				AACBBE490F95108600F1A2B1 /* Foundation.framework */,
+				164B375C10E3680A0075BE63 /* UIKit.framework */,
+				164B396110E37D5B0075BE63 /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -118,6 +127,8 @@
 				164B382E10E372960075BE63 /* main.m */,
 				164B382410E372080075BE63 /* RKDemoAppDelegate.h */,
 				164B382510E372080075BE63 /* RKDemoAppDelegate.m */,
+				164B38CB10E374C80075BE63 /* RKDemoMainViewController.h */,
+				164B38CC10E374C80075BE63 /* RKDemoMainViewController.m */,
 				164B389810E3731C0075BE63 /* MapKit.framework */,
 			);
 			name = "Demo App";
@@ -218,6 +229,7 @@
 			files = (
 				164B382610E372080075BE63 /* RKDemoAppDelegate.m in Sources */,
 				164B382F10E372960075BE63 /* main.m in Sources */,
+				164B38CD10E374C80075BE63 /* RKDemoMainViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

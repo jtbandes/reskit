@@ -19,6 +19,7 @@
 	[window addSubview:mainViewController.view]; // Show main view controller
 	
 	// Initialize ResKit
+	[[RKWindowManager sharedManager] initialize];
 }
 
 - (void)dealloc {
