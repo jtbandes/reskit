@@ -20,6 +20,7 @@
 	
 	// Initialize ResKit
 	[[RKWindowManager sharedManager] initialize];
+	[RKWindowManager sharedManager].simulatedSize = CGSizeMake(800, 600);
 	[RKWindowManager sharedManager].scaleFactor = 0.5;
 }
 

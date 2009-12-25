@@ -10,13 +10,15 @@
 
 @class RKWindow;
 
-@interface RKWindowManager : NSObject {
+@interface RKWindowManager : UIResponder {
 	CGFloat scaleFactor;
 	CGSize simulatedSize;
 	
 	RKWindow *resKitWindow;
 	UIWindow *appWindow;
 	BOOL initialized;
+	NSMutableDictionary *touchOrigins;
+	UIScrollView *scrollView;
 }
 @property (nonatomic) CGFloat scaleFactor;
 @property (nonatomic) CGSize simulatedSize;
