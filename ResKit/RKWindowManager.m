@@ -45,7 +45,7 @@ void MethodSwizzle(Class c, SEL orig, SEL new) {
 
 @implementation RKWindowManager
 
-@synthesize scaleFactor, simulatedSize;
+@synthesize scaleFactor, simulatedSize, deviceCenter;
 static RKWindowManager *sharedWindowManager = nil;
 
 - (id)init {
@@ -57,6 +57,10 @@ static RKWindowManager *sharedWindowManager = nil;
 				  context:NULL];
 		[self addObserver:self
 			   forKeyPath:@"simulatedSize"
+				  options:0
+				  context:NULL];
+		[self addObserver:self
+			   forKeyPath:@"deviceCenter"
 				  options:0
 				  context:NULL];
 		
@@ -106,6 +110,12 @@ static RKWindowManager *sharedWindowManager = nil;
 	resKitWindow.backgroundColor = [UIColor blackColor]; // This allows touches outside the app window
 	[resKitWindow makeKeyAndVisible];
 	
+	UIImage *bezel = [[UIImage imageNamed:@"bezel.png"] stretchableImageWithLeftCapWidth:165 topCapHeight:130];
+	if (bezel) {
+		bezelView = [[UIImageView alloc] initWithImage:bezel];
+		[resKitWindow addSubview:bezelView];
+	}
+	
 	// It appears that the window's initial frame
 	// isn't actually [UIScreen mainScreen].applicationFrame, it's the full bounds...
 	
@@ -114,6 +124,7 @@ static RKWindowManager *sharedWindowManager = nil;
 	// Start with the device's normal size
 	scaleFactor = 1.0;
 	simulatedSize = [UIScreen mainScreen].bounds.size;
+	deviceCenter = appWindow.center;
 	
 	// TODO: [insert more magic here]
 	
@@ -226,7 +237,7 @@ static RKWindowManager *sharedWindowManager = nil;
 //	if (center.y > appWindow.bounds.size.height*scaleFactor/2) center.y = appWindow.bounds.size.height*scaleFactor/2;
 //	if (center.y < resKitWindow.bounds.size.height - appWindow.bounds.size.height*scaleFactor/2)
 //		center.y = resKitWindow.bounds.size.height - appWindow.bounds.size.height*scaleFactor/2;
-	appWindow.center = center;
+	self.deviceCenter = center;
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -243,13 +254,15 @@ static RKWindowManager *sharedWindowManager = nil;
 }
 
 - (void)repositionWindow {
-	
-	[UIView beginAnimations:nil context:NULL]; // A nice transition
+	//[UIView beginAnimations:nil context:NULL]; // A nice transition
 	
 	// Resize window
 	CGRect bounds = appWindow.bounds;
 	bounds.size = simulatedSize;
 	appWindow.bounds = bounds;
+	bezelView.bounds = CGRectMake(0, 0,
+								  appWindow.bounds.size.width+67,
+								  appWindow.bounds.size.height+249);
 	
 	// Changing the return values from UIScreen fixes the app's autorotation
 	[[UIScreen mainScreen] setValue:[NSValue valueWithCGRect:appWindow.bounds]
@@ -257,14 +270,21 @@ static RKWindowManager *sharedWindowManager = nil;
 	
 	// Readjust scale
 	appWindow.transform = CGAffineTransformMakeScale(scaleFactor, scaleFactor);
+	bezelView.transform = appWindow.transform;
 	
-	[UIView commitAnimations];
+	// Reposition window and bezel
+	appWindow.center = deviceCenter;
+	bezelView.center = CGPointMake(deviceCenter.x-2*scaleFactor,
+								   deviceCenter.y-8*scaleFactor);
+	
+	//[UIView commitAnimations];
 }
 
 - (void)dealloc {
 	// We won't actually get deallocated (singleton), but it's good practice...
 	[appWindow release];
 	[touchOrigins release];
+	[bezelView release];
 	[super dealloc];
 }
 

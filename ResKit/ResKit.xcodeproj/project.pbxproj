@@ -22,6 +22,7 @@
 		164B39AC10E37E350075BE63 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 164B396110E37D5B0075BE63 /* CoreGraphics.framework */; };
 		164B3C8B10E4992D0075BE63 /* RKWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 164B3C8910E4992D0075BE63 /* RKWindow.h */; };
 		164B3C8C10E4992D0075BE63 /* RKWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 164B3C8A10E4992D0075BE63 /* RKWindow.m */; };
+		164B3ED310E56F630075BE63 /* bezel.png in Resources */ = {isa = PBXBuildFile; fileRef = 164B3ECE10E56F440075BE63 /* bezel.png */; };
 		AA747D9F0F9514B9006C5449 /* ResKit_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* ResKit_Prefix.pch */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 /* End PBXBuildFile section */
@@ -52,6 +53,7 @@
 		164B396110E37D5B0075BE63 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		164B3C8910E4992D0075BE63 /* RKWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKWindow.h; sourceTree = "<group>"; };
 		164B3C8A10E4992D0075BE63 /* RKWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKWindow.m; sourceTree = "<group>"; };
+		164B3ECE10E56F440075BE63 /* bezel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bezel.png; sourceTree = "<group>"; };
 		AA747D9E0F9514B9006C5449 /* ResKit_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResKit_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2AAC07E0554694100DB518D /* libResKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libResKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -136,8 +138,17 @@
 				164B38CB10E374C80075BE63 /* RKDemoMainViewController.h */,
 				164B38CC10E374C80075BE63 /* RKDemoMainViewController.m */,
 				164B389810E3731C0075BE63 /* MapKit.framework */,
+				164B3ECC10E56F2E0075BE63 /* Resources */,
 			);
 			name = "Demo App";
+			sourceTree = "<group>";
+		};
+		164B3ECC10E56F2E0075BE63 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				164B3ECE10E56F440075BE63 /* bezel.png */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		32C88DFF0371C24200C91783 /* Other Sources */ = {
@@ -224,6 +235,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				164B381D10E370D60075BE63 /* MainWindow.xib in Resources */,
+				164B3ED310E56F630075BE63 /* bezel.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

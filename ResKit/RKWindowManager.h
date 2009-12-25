@@ -13,6 +13,7 @@
 @interface RKWindowManager : UIResponder {
 	CGFloat scaleFactor;
 	CGSize simulatedSize;
+	CGPoint deviceCenter;
 	
 	RKWindow *resKitWindow;
 	UIWindow *appWindow;
@@ -20,8 +21,10 @@
 	NSMutableDictionary *touchOrigins;
 	BOOL zooming;
 	CGFloat zoomStartScale;
+	UIImageView *bezelView;
 }
 @property (nonatomic) CGFloat scaleFactor;
+@property (nonatomic) CGPoint deviceCenter;
 @property (nonatomic) CGSize simulatedSize;
 
 // Returns the shared window manager instance
