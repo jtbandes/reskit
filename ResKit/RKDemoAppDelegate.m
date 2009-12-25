@@ -20,6 +20,7 @@
 	
 	// Initialize ResKit
 	[[RKWindowManager sharedManager] initialize];
+	[RKWindowManager sharedManager].scaleFactor = 0.5;
 }
 
 - (void)dealloc {
