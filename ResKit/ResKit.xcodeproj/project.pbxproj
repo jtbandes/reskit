@@ -50,13 +50,8 @@
 		164B38CB10E374C80075BE63 /* RKDemoMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKDemoMainViewController.h; sourceTree = "<group>"; };
 		164B38CC10E374C80075BE63 /* RKDemoMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKDemoMainViewController.m; sourceTree = "<group>"; };
 		164B396110E37D5B0075BE63 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-<<<<<<< HEAD
 		164B3C8910E4992D0075BE63 /* RKWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKWindow.h; sourceTree = "<group>"; };
 		164B3C8A10E4992D0075BE63 /* RKWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKWindow.m; sourceTree = "<group>"; };
-=======
-		164B3A0010E46E430075BE63 /* RKWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKWindow.h; sourceTree = "<group>"; };
-		164B3A0110E46E430075BE63 /* RKWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKWindow.m; sourceTree = "<group>"; };
->>>>>>> scrollview
 		AA747D9E0F9514B9006C5449 /* ResKit_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResKit_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2AAC07E0554694100DB518D /* libResKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libResKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -124,13 +119,8 @@
 			children = (
 				164B375810E367ED0075BE63 /* RKWindowManager.h */,
 				164B375910E367ED0075BE63 /* RKWindowManager.m */,
-<<<<<<< HEAD
 				164B3C8910E4992D0075BE63 /* RKWindow.h */,
 				164B3C8A10E4992D0075BE63 /* RKWindow.m */,
-=======
-				164B3A0010E46E430075BE63 /* RKWindow.h */,
-				164B3A0110E46E430075BE63 /* RKWindow.m */,
->>>>>>> scrollview
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -167,11 +157,7 @@
 			files = (
 				AA747D9F0F9514B9006C5449 /* ResKit_Prefix.pch in Headers */,
 				164B375A10E367ED0075BE63 /* RKWindowManager.h in Headers */,
-<<<<<<< HEAD
 				164B3C8B10E4992D0075BE63 /* RKWindow.h in Headers */,
-=======
-				164B3A0210E46E430075BE63 /* RKWindow.h in Headers */,
->>>>>>> scrollview
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,11 +245,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				164B375B10E367ED0075BE63 /* RKWindowManager.m in Sources */,
-<<<<<<< HEAD
 				164B3C8C10E4992D0075BE63 /* RKWindow.m in Sources */,
-=======
-				164B3A0310E46E430075BE63 /* RKWindow.m in Sources */,
->>>>>>> scrollview
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
