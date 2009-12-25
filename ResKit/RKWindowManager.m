@@ -8,7 +8,6 @@
 
 #import <CoreGraphics/CoreGraphics.h>
 #import "RKWindowManager.h"
-#import "RKWindow.h"
 
 #define RKLog NSLog
 
@@ -104,9 +103,8 @@ static RKWindowManager *sharedWindowManager = nil;
 	appWindow = [[[UIApplication sharedApplication] keyWindow] retain]; // The main application window being tested
 	appWindow.windowLevel = UIWindowLevelAlert;
 	// Create the window which is used to intercept touches
-	resKitWindow = [[RKWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-	resKitWindow.windowManager = self;
-	//resKitWindow.windowLevel = UIWindowLevelAlert;
+	resKitWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+	resKitWindow.multipleTouchEnabled = YES;
 	resKitWindow.backgroundColor = [UIColor blackColor]; // This allows touches outside the app window
 	[resKitWindow makeKeyAndVisible];
 	
@@ -293,6 +291,7 @@ static RKWindowManager *sharedWindowManager = nil;
 	[appWindow release];
 	[touchOrigins release];
 	[bezelView release];
+	[resKitWindow release];
 	[super dealloc];
 }
 
