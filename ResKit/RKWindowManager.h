@@ -18,7 +18,8 @@
 	UIWindow *appWindow;
 	BOOL initialized;
 	NSMutableDictionary *touchOrigins;
-	//UIScrollView *scrollView;
+	BOOL zooming;
+	CGFloat zoomStartScale;
 }
 @property (nonatomic) CGFloat scaleFactor;
 @property (nonatomic) CGSize simulatedSize;

@@ -55,13 +55,9 @@ static RKWindowManager *sharedWindowManager = nil;
 						format:@"Attempt to change %@ before initializing ResKit window manager %@", keyPath, self];
 		}
 		
-		//scrollView.contentSize = simulatedSize;
-		
 		// Adjust display based on new property values
 		[self repositionWindow];
-	}// else if (object == scrollView) {
-//		[self repositionWindow];
-//	}
+	}
 }
 
 - (void)initialize {
@@ -86,77 +82,63 @@ static RKWindowManager *sharedWindowManager = nil;
 	// It appears that the window's initial frame
 	// isn't actually [UIScreen mainScreen].applicationFrame, it's the full bounds...
 	
+	// TODO: support initializing in landscape
+	
 	// Start with the device's normal size
 	scaleFactor = 1.0;
 	simulatedSize = [UIScreen mainScreen].bounds.size;
 	
+	// TODO: [insert more magic here]
 	
-//	scrollView = [[UIScrollView alloc] initWithFrame:resKitWindow.bounds];
-//	scrollView.multipleTouchEnabled = YES;
-//	scrollView.backgroundColor = [UIColor blueColor];
-//	scrollView.minimumZoomScale = 0.1;
-//	//scrollView.maximumZoomScale = 2;
-//	scrollView.alwaysBounceHorizontal = YES;
-//	scrollView.alwaysBounceVertical = YES;
-//	scrollView.bouncesZoom = YES;
-//	scrollView.contentSize = simulatedSize;
-//	[scrollView addObserver:self
-//				 forKeyPath:@"contentOffset"
-//					options:0
-//					context:NULL];
-//	[scrollView addObserver:self
-//				 forKeyPath:@"zoomScale"
-//					options:0
-//					context:NULL];
-//	[appWindow addSubview:scrollView];
-	
-	// TODO: [insert magic here]
 	[self repositionWindow];
 }
 
 #pragma mark -
 #pragma mark Event handling
 
-//- (void)resKitWindow:(RKWindow *)window
-//	 didReceiveEvent:(UIEvent *)event {
-//	if (event.type == UIEventTypeTouches) {
-//		NSMutableSet *began = [NSMutableSet set];
-//		NSMutableSet *moved = [NSMutableSet set];
-//		NSMutableSet *ended = [NSMutableSet set];
-//		NSMutableSet *cancelled = [NSMutableSet set];
-//		for (UITouch *t in [event allTouches]) {
-//			switch (t.phase) {
-//				case UITouchPhaseBegan: [began addObject:t]; break;
-//				case UITouchPhaseMoved: [moved addObject:t]; break;
-//				case UITouchPhaseEnded: [ended addObject:t]; break;
-//				case UITouchPhaseCancelled: [cancelled addObject:t]; break;
-//				default: break;
-//			}
-//		}
-//		UITouch *t = [moved anyObject];
-//		CGPoint center = appWindow.center;
-//		CGPoint loc = [t locationInView:nil];
-//		CGPoint prevLoc = [t previousLocationInView:nil];
-//		center.x += loc.x - prevLoc.x;
-//		center.y += loc.y - prevLoc.y;
-//		appWindow.center = center;
-//	}
-//	
-//	[appWindow sendEvent:event];
-//}
-
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-	NSLog(@"Began %d", [[event allTouches] count]);
 	for (UITouch *touch in touches) {
 		[touchOrigins setObject:[NSValue valueWithCGPoint:[touch locationInView:nil]]
 						 forKey:[NSValue valueWithNonretainedObject:touch]];
 	}
+	if ([touchOrigins count] != 2) zooming = NO;
 }
 
 - (void)touchesMoved:(NSSet *)touches
 		   withEvent:(UIEvent *)event {
-	if ([[event allTouches] count] == 2) {
+	if ([touchOrigins count] == 2) {
+		NSArray *ta = [[event allTouches] allObjects];
+		UITouch *t1 = [ta objectAtIndex:0];
+		UITouch *t2 = [ta objectAtIndex:1];
+		CGPoint t1o = [[touchOrigins objectForKey:[NSValue valueWithNonretainedObject:t1]] CGPointValue];
+		CGPoint t2o = [[touchOrigins objectForKey:[NSValue valueWithNonretainedObject:t2]] CGPointValue];
+		CGPoint t1p = [t1 locationInView:nil];
+		CGPoint t2p = [t2 locationInView:nil];
 		
+		// Calculate the current and original distance between touches
+		CGFloat ox = t2o.x - t1o.x;
+		CGFloat oy = t2o.y - t1o.y;
+		CGFloat originalDistance = sqrt(ox*ox + oy*oy);
+		
+		CGFloat px = t2p.x - t1p.x;
+		CGFloat py = t2p.y - t1p.y;
+		CGFloat newDistance = sqrt(px*px + py*py);
+		
+		if (abs(newDistance - originalDistance) > 10 && !zooming) {
+			zooming = YES;
+			zoomStartScale = scaleFactor;
+			// Reset origins for smooth transition into zooming
+			[touchOrigins setObject:[NSValue valueWithCGPoint:[t1 locationInView:nil]]
+							 forKey:[NSValue valueWithNonretainedObject:t1]];
+			[touchOrigins setObject:[NSValue valueWithCGPoint:[t2 locationInView:nil]]
+							 forKey:[NSValue valueWithNonretainedObject:t2]];
+		} else if (zooming) {
+			CGFloat scale = zoomStartScale * newDistance / originalDistance;
+			if (scale > 1) scale = 1;
+			if (scale < 0.05) scale = 0.05;
+			self.scaleFactor = scale;
+			return;
+		}
 	}
 	UITouch *t = [touches anyObject];
 	CGPoint center = appWindow.center;
@@ -164,6 +146,13 @@ static RKWindowManager *sharedWindowManager = nil;
 	CGPoint prevLoc = [t previousLocationInView:nil];
 	center.x += loc.x - prevLoc.x;
 	center.y += loc.y - prevLoc.y;
+//	// Limit to edges
+//	if (center.x > appWindow.bounds.size.width*scaleFactor/2) center.x = appWindow.bounds.size.width*scaleFactor/2;
+//	if (center.x < resKitWindow.bounds.size.width - appWindow.bounds.size.width*scaleFactor/2)
+//		center.x = resKitWindow.bounds.size.width - appWindow.bounds.size.width*scaleFactor/2;
+//	if (center.y > appWindow.bounds.size.height*scaleFactor/2) center.y = appWindow.bounds.size.height*scaleFactor/2;
+//	if (center.y < resKitWindow.bounds.size.height - appWindow.bounds.size.height*scaleFactor/2)
+//		center.y = resKitWindow.bounds.size.height - appWindow.bounds.size.height*scaleFactor/2;
 	appWindow.center = center;
 }
 
@@ -171,32 +160,30 @@ static RKWindowManager *sharedWindowManager = nil;
 	for (UITouch *touch in touches) {
 		[touchOrigins removeObjectForKey:[NSValue valueWithNonretainedObject:touch]];
 	}
+	if ([touchOrigins count] != 2) zooming = NO;
 }
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
 	for (UITouch *touch in touches) {
 		[touchOrigins removeObjectForKey:[NSValue valueWithNonretainedObject:touch]];
 	}
+	if ([touchOrigins count] != 2) zooming = NO;
 }
 
 - (void)repositionWindow {
 	
-//	appWindow.center = CGPointMake(resKitWindow.bounds.size.width/2+10 - scrollView.contentOffset.x,
-//								   resKitWindow.bounds.size.height/2 - scrollView.contentOffset.y);
-//	appWindow.transform = CGAffineTransformMakeScale(scrollView.zoomScale, scrollView.zoomScale);
-	
 	[UIView beginAnimations:nil context:NULL]; // A nice transition
-	
-	//scrollView.contentSize = simulatedSize;
 	
 	// Resize window
 	CGRect bounds = appWindow.bounds;
 	bounds.size = simulatedSize;
 	appWindow.bounds = bounds;
 	
+	// Changing the return values from UIScreen fixes the app's autorotation
+	[[UIScreen mainScreen] setValue:[NSValue valueWithCGRect:appWindow.bounds]
+							 forKey:@"_bounds"];
+	
 	// Readjust scale
 	appWindow.transform = CGAffineTransformMakeScale(scaleFactor, scaleFactor);
-	
-	// TODO: adjust window position
 	
 	[UIView commitAnimations];
 }
@@ -205,7 +192,6 @@ static RKWindowManager *sharedWindowManager = nil;
 	// We won't actually get deallocated (singleton), but it's good practice...
 	[appWindow release];
 	[touchOrigins release];
-	//[scrollView release];
 	[super dealloc];
 }
 
