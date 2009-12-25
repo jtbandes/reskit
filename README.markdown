@@ -3,6 +3,7 @@ A library for testing resolution-independent iPhone OS applications.
 
 ## Usage
 To use ResKit, you must:
+
 - Include libResKit.a in your application.
 - Initialize the ResKit window manager.
 - Set the desired simulated screen size.
