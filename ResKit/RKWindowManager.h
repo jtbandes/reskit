@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+@class RKWindow;
+
 @interface RKWindowManager : NSObject {
 	CGFloat scaleFactor;
 	CGSize simulatedSize;
 	
-	UIWindow *resWindow;
+	RKWindow *resKitWindow;
 	UIWindow *appWindow;
 	BOOL initialized;
 }
@@ -21,7 +23,7 @@
 
 // Returns the shared window manager instance
 + (RKWindowManager *)sharedManager;
-// Initialize the window manager (must be called before using)
+// Initialize the window manager (must be called before using the manager)
 - (void)initialize;
 
 @end
