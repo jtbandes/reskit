@@ -8,14 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@class RKWindow;
-
 @interface RKWindowManager : UIResponder {
 	CGFloat scaleFactor;
 	CGSize simulatedSize;
 	CGPoint deviceCenter;
 	
-	RKWindow *resKitWindow;
+	UIWindow *resKitWindow;
 	UIWindow *appWindow;
 	BOOL initialized;
 	NSMutableDictionary *touchOrigins;

@@ -20,8 +20,6 @@
 		164B38CD10E374C80075BE63 /* RKDemoMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 164B38CC10E374C80075BE63 /* RKDemoMainViewController.m */; };
 		164B396210E37D5B0075BE63 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 164B396110E37D5B0075BE63 /* CoreGraphics.framework */; };
 		164B39AC10E37E350075BE63 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 164B396110E37D5B0075BE63 /* CoreGraphics.framework */; };
-		164B3C8B10E4992D0075BE63 /* RKWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 164B3C8910E4992D0075BE63 /* RKWindow.h */; };
-		164B3C8C10E4992D0075BE63 /* RKWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 164B3C8A10E4992D0075BE63 /* RKWindow.m */; };
 		164B3ED310E56F630075BE63 /* reskit-bezel.png in Resources */ = {isa = PBXBuildFile; fileRef = 164B3ECE10E56F440075BE63 /* reskit-bezel.png */; };
 		164B3F2C10E578610075BE63 /* reskit-home.png in Resources */ = {isa = PBXBuildFile; fileRef = 164B3F2B10E578610075BE63 /* reskit-home.png */; };
 		AA747D9F0F9514B9006C5449 /* ResKit_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* ResKit_Prefix.pch */; };
@@ -52,8 +50,6 @@
 		164B38CB10E374C80075BE63 /* RKDemoMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKDemoMainViewController.h; sourceTree = "<group>"; };
 		164B38CC10E374C80075BE63 /* RKDemoMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKDemoMainViewController.m; sourceTree = "<group>"; };
 		164B396110E37D5B0075BE63 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		164B3C8910E4992D0075BE63 /* RKWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKWindow.h; sourceTree = "<group>"; };
-		164B3C8A10E4992D0075BE63 /* RKWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKWindow.m; sourceTree = "<group>"; };
 		164B3ECE10E56F440075BE63 /* reskit-bezel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reskit-bezel.png"; sourceTree = "<group>"; };
 		164B3F2B10E578610075BE63 /* reskit-home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reskit-home.png"; sourceTree = "<group>"; };
 		AA747D9E0F9514B9006C5449 /* ResKit_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResKit_Prefix.pch; sourceTree = SOURCE_ROOT; };
@@ -123,8 +119,6 @@
 			children = (
 				164B375810E367ED0075BE63 /* RKWindowManager.h */,
 				164B375910E367ED0075BE63 /* RKWindowManager.m */,
-				164B3C8910E4992D0075BE63 /* RKWindow.h */,
-				164B3C8A10E4992D0075BE63 /* RKWindow.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -171,7 +165,6 @@
 			files = (
 				AA747D9F0F9514B9006C5449 /* ResKit_Prefix.pch in Headers */,
 				164B375A10E367ED0075BE63 /* RKWindowManager.h in Headers */,
-				164B3C8B10E4992D0075BE63 /* RKWindow.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,7 +254,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				164B375B10E367ED0075BE63 /* RKWindowManager.m in Sources */,
-				164B3C8C10E4992D0075BE63 /* RKWindow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
