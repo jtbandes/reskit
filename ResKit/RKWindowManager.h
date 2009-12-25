@@ -17,6 +17,8 @@
 	RKWindow *resKitWindow;
 	UIWindow *appWindow;
 	BOOL initialized;
+	NSMutableDictionary *touchOrigins;
+	//UIScrollView *scrollView;
 }
 @property (nonatomic) CGFloat scaleFactor;
 @property (nonatomic) CGSize simulatedSize;
