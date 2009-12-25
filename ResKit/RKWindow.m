@@ -22,9 +22,9 @@
 }
 
 // Forward touch events to the delegate (window manager) via responder chain
-- (UIResponder *)nextResponder {
-	return windowManager;
-}
+//- (UIResponder *)nextResponder {
+//	return windowManager;
+//}
 
 //- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
 //	NSLog(@"Touches began %@", touches);
@@ -32,8 +32,10 @@
 
 // Forward touch events to the delegate (window manager)
 //- (void)sendEvent:(UIEvent *)event {
-//	[delegate resKitWindow:self
+//	NSLog(@"Send event");
+//	[windowManager resKitWindow:self
 //		   didReceiveEvent:event];
+//	[super sendEvent:event];
 //}
 
 @end

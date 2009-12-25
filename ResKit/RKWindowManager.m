@@ -12,11 +12,36 @@
 
 #define RKLog NSLog
 
+#import <objc/runtime.h>
+void MethodSwizzle(Class c, SEL orig, SEL new) {
+    Method origMethod = class_getInstanceMethod(c, orig);
+    Method newMethod = class_getInstanceMethod(c, new);
+    if(class_addMethod(c, orig, method_getImplementation(newMethod), method_getTypeEncoding(newMethod))) {
+		class_replaceMethod(c, new, method_getImplementation(origMethod), method_getTypeEncoding(origMethod));
+	} else {
+		method_exchangeImplementations(origMethod, newMethod);
+	}
+}
+
+
 // Private methods
 @interface RKWindowManager ( )
 - (void)repositionWindow;
+- (BOOL)application:(UIApplication *)application
+	didReceiveEvent:(UIEvent *)event;
 @end
 
+
+
+@implementation UIApplication (ResKitEventHandling)
+- (void)resKit_sendEvent:(UIEvent *)event {
+	// Forward the event to the window manager
+	if (![[RKWindowManager sharedManager] application:(UIApplication *)self
+									  didReceiveEvent:event]) {
+		[self resKit_sendEvent:event]; // Call original implementation
+	}
+}
+@end
 
 @implementation RKWindowManager
 
@@ -68,6 +93,9 @@ static RKWindowManager *sharedWindowManager = nil;
 	}
 	initialized = YES;
 	
+	// Swizzle out the application's sendEvent: method so we can capture touches
+	MethodSwizzle([[UIApplication sharedApplication] class], @selector(sendEvent:), @selector(resKit_sendEvent:));
+	
 	// Initialize ResKit
 	appWindow = [[[UIApplication sharedApplication] keyWindow] retain]; // The main application window being tested
 	appWindow.windowLevel = UIWindowLevelAlert;
@@ -77,7 +105,6 @@ static RKWindowManager *sharedWindowManager = nil;
 	//resKitWindow.windowLevel = UIWindowLevelAlert;
 	resKitWindow.backgroundColor = [UIColor blackColor]; // This allows touches outside the app window
 	[resKitWindow makeKeyAndVisible];
-	[appWindow removeFromSuperview];
 	
 	// It appears that the window's initial frame
 	// isn't actually [UIScreen mainScreen].applicationFrame, it's the full bounds...
@@ -96,9 +123,53 @@ static RKWindowManager *sharedWindowManager = nil;
 #pragma mark -
 #pragma mark Event handling
 
+- (BOOL)application:(UIApplication *)application
+	didReceiveEvent:(UIEvent *)event {
+	
+	if (event.type == UIEventTypeTouches) {
+		BOOL sendTouches = NO;
+		for (UITouch *t in [event allTouches]) {
+			if (t.window == resKitWindow) {
+				sendTouches = YES;
+				break;
+			}
+		}
+		
+		// Zooming or touching the ResKit window
+		if ([[event allTouches] count] == 2 || sendTouches) {
+			NSMutableSet *b = [NSMutableSet set];
+			NSMutableSet *m = [NSMutableSet set];
+			NSMutableSet *e = [NSMutableSet set];
+			NSMutableSet *c = [NSMutableSet set];
+			
+			for (UITouch *t in [event allTouches]) {
+				switch (t.phase) {
+					case UITouchPhaseBegan: [b addObject:t]; break;
+					case UITouchPhaseMoved: [m addObject:t]; break;
+					case UITouchPhaseEnded: [e addObject:t]; break;
+					case UITouchPhaseCancelled: [c addObject:t]; break;
+					default: break;
+				}
+			}
+			
+			// Cancel all existing touches and resend touchesBegan
+			if ([b count] > 0) {
+				[touchOrigins removeAllObjects];
+				[self touchesBegan:[event allTouches] withEvent:event];
+			} else if ([m count] > 0) [self touchesMoved:m withEvent:event];
+			if ([e count] > 0) [self touchesEnded:e withEvent:event];
+			if ([c count] > 0) [self touchesCancelled:c withEvent:event];
+			
+			return YES;
+		}
+	}
+	return NO; // call default implementation
+}
+
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
 	for (UITouch *touch in touches) {
-		[touchOrigins setObject:[NSValue valueWithCGPoint:[touch locationInView:nil]]
+		[touchOrigins setObject:[NSValue valueWithCGPoint:[resKitWindow convertPoint:[touch locationInView:nil]
+																		  fromWindow:touch.window]]
 						 forKey:[NSValue valueWithNonretainedObject:touch]];
 	}
 	if ([touchOrigins count] != 2) zooming = NO;
@@ -112,8 +183,10 @@ static RKWindowManager *sharedWindowManager = nil;
 		UITouch *t2 = [ta objectAtIndex:1];
 		CGPoint t1o = [[touchOrigins objectForKey:[NSValue valueWithNonretainedObject:t1]] CGPointValue];
 		CGPoint t2o = [[touchOrigins objectForKey:[NSValue valueWithNonretainedObject:t2]] CGPointValue];
-		CGPoint t1p = [t1 locationInView:nil];
-		CGPoint t2p = [t2 locationInView:nil];
+		CGPoint t1p = [resKitWindow convertPoint:[t1 locationInView:nil]
+									  fromWindow:t1.window];
+		CGPoint t2p = [resKitWindow convertPoint:[t2 locationInView:nil]
+									  fromWindow:t2.window];
 		
 		// Calculate the current and original distance between touches
 		CGFloat ox = t2o.x - t1o.x;
@@ -128,17 +201,17 @@ static RKWindowManager *sharedWindowManager = nil;
 			zooming = YES;
 			zoomStartScale = scaleFactor;
 			// Reset origins for smooth transition into zooming
-			[touchOrigins setObject:[NSValue valueWithCGPoint:[t1 locationInView:nil]]
+			[touchOrigins setObject:[NSValue valueWithCGPoint:t1p]
 							 forKey:[NSValue valueWithNonretainedObject:t1]];
-			[touchOrigins setObject:[NSValue valueWithCGPoint:[t2 locationInView:nil]]
+			[touchOrigins setObject:[NSValue valueWithCGPoint:t2p]
 							 forKey:[NSValue valueWithNonretainedObject:t2]];
 		} else if (zooming) {
 			CGFloat scale = zoomStartScale * newDistance / originalDistance;
 			if (scale > 1) scale = 1;
 			if (scale < 0.05) scale = 0.05;
 			self.scaleFactor = scale;
-			return;
 		}
+		return;
 	}
 	UITouch *t = [touches anyObject];
 	CGPoint center = appWindow.center;
