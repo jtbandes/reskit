@@ -110,10 +110,18 @@ static RKWindowManager *sharedWindowManager = nil;
 	resKitWindow.backgroundColor = [UIColor blackColor]; // This allows touches outside the app window
 	[resKitWindow makeKeyAndVisible];
 	
-	UIImage *bezel = [[UIImage imageNamed:@"bezel.png"] stretchableImageWithLeftCapWidth:165 topCapHeight:130];
+	UIImage *bezel = [[UIImage imageNamed:@"reskit-bezel.png"] stretchableImageWithLeftCapWidth:165 topCapHeight:130];
 	if (bezel) {
 		bezelView = [[UIImageView alloc] initWithImage:bezel];
 		[resKitWindow addSubview:bezelView];
+		UIImage *homeButton = [UIImage imageNamed:@"reskit-home.png"];
+		if (homeButton) {
+			UIImageView *homeButtonView = [[UIImageView alloc] initWithImage:homeButton];
+			homeButtonView.center = CGPointMake(bezelView.bounds.size.width/2,
+												bezelView.bounds.size.height - 70);
+			homeButtonView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin;
+			[bezelView addSubview:homeButtonView];
+		}
 	}
 	
 	// It appears that the window's initial frame
