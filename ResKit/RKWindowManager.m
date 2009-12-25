@@ -55,13 +55,13 @@ static RKWindowManager *sharedWindowManager = nil;
 						format:@"Attempt to change %@ before initializing ResKit window manager %@", keyPath, self];
 		}
 		
-		scrollView.contentSize = simulatedSize;
+		//scrollView.contentSize = simulatedSize;
 		
 		// Adjust display based on new property values
 		[self repositionWindow];
-	} else if (object == scrollView) {
-		[self repositionWindow];
-	}
+	}// else if (object == scrollView) {
+//		[self repositionWindow];
+//	}
 }
 
 - (void)initialize {
@@ -91,15 +91,15 @@ static RKWindowManager *sharedWindowManager = nil;
 	simulatedSize = [UIScreen mainScreen].bounds.size;
 	
 	
-	scrollView = [[UIScrollView alloc] initWithFrame:resKitWindow.bounds];
-	scrollView.multipleTouchEnabled = YES;
-	scrollView.backgroundColor = [UIColor blueColor];
-	scrollView.minimumZoomScale = 0.1;
-	//scrollView.maximumZoomScale = 2;
-	scrollView.alwaysBounceHorizontal = YES;
-	scrollView.alwaysBounceVertical = YES;
-	scrollView.bouncesZoom = YES;
-	scrollView.contentSize = simulatedSize;
+//	scrollView = [[UIScrollView alloc] initWithFrame:resKitWindow.bounds];
+//	scrollView.multipleTouchEnabled = YES;
+//	scrollView.backgroundColor = [UIColor blueColor];
+//	scrollView.minimumZoomScale = 0.1;
+//	//scrollView.maximumZoomScale = 2;
+//	scrollView.alwaysBounceHorizontal = YES;
+//	scrollView.alwaysBounceVertical = YES;
+//	scrollView.bouncesZoom = YES;
+//	scrollView.contentSize = simulatedSize;
 //	[scrollView addObserver:self
 //				 forKeyPath:@"contentOffset"
 //					options:0
@@ -108,8 +108,7 @@ static RKWindowManager *sharedWindowManager = nil;
 //				 forKeyPath:@"zoomScale"
 //					options:0
 //					context:NULL];
-	[appWindow
-	 addSubview:scrollView];
+//	[appWindow addSubview:scrollView];
 	
 	// TODO: [insert magic here]
 	[self repositionWindow];
@@ -181,32 +180,32 @@ static RKWindowManager *sharedWindowManager = nil;
 
 - (void)repositionWindow {
 	
-	appWindow.center = CGPointMake(resKitWindow.bounds.size.width/2+10 - scrollView.contentOffset.x,
-								   resKitWindow.bounds.size.height/2 - scrollView.contentOffset.y);
-	appWindow.transform = CGAffineTransformMakeScale(scrollView.zoomScale, scrollView.zoomScale);
+//	appWindow.center = CGPointMake(resKitWindow.bounds.size.width/2+10 - scrollView.contentOffset.x,
+//								   resKitWindow.bounds.size.height/2 - scrollView.contentOffset.y);
+//	appWindow.transform = CGAffineTransformMakeScale(scrollView.zoomScale, scrollView.zoomScale);
 	
-//	[UIView beginAnimations:nil context:NULL]; // A nice transition
+	[UIView beginAnimations:nil context:NULL]; // A nice transition
 	
 	//scrollView.contentSize = simulatedSize;
 	
-//	// Resize window
-//	CGRect bounds = appWindow.bounds;
-//	bounds.size = simulatedSize;
-//	appWindow.bounds = bounds;
-//	
-//	// Readjust scale
-//	appWindow.transform = CGAffineTransformMakeScale(scaleFactor, scaleFactor);
+	// Resize window
+	CGRect bounds = appWindow.bounds;
+	bounds.size = simulatedSize;
+	appWindow.bounds = bounds;
+	
+	// Readjust scale
+	appWindow.transform = CGAffineTransformMakeScale(scaleFactor, scaleFactor);
 	
 	// TODO: adjust window position
 	
-//	[UIView commitAnimations];
+	[UIView commitAnimations];
 }
 
 - (void)dealloc {
 	// We won't actually get deallocated (singleton), but it's good practice...
 	[appWindow release];
 	[touchOrigins release];
-	[scrollView release];
+	//[scrollView release];
 	[super dealloc];
 }
 
