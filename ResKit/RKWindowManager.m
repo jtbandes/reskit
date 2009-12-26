@@ -101,12 +101,15 @@ static RKWindowManager *sharedWindowManager = nil;
 	
 	// Initialize ResKit
 	appWindow = [[[UIApplication sharedApplication] keyWindow] retain]; // The main application window being tested
-	appWindow.windowLevel = UIWindowLevelAlert;
+	//appWindow.windowLevel = (UIWindowLevelNormal + UIWindowLevelAlert) / 2.0; // In between normal and alert, so alerts aren't covered
+	
 	// Create the window which is used to intercept touches
 	resKitWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 	resKitWindow.multipleTouchEnabled = YES;
 	resKitWindow.backgroundColor = [UIColor blackColor]; // This allows touches outside the app window
 	[resKitWindow makeKeyAndVisible];
+	
+	[appWindow makeKeyAndVisible]; // Put the application window back on top
 	
 	UIImage *bezel = [[UIImage imageNamed:@"reskit-bezel.png"] stretchableImageWithLeftCapWidth:165 topCapHeight:130];
 	if (bezel) {
@@ -153,7 +156,7 @@ static RKWindowManager *sharedWindowManager = nil;
 		}
 		
 		// Zooming or touching the ResKit window
-		if ([[event allTouches] count] == 2 || sendTouches) {
+		if ([[event allTouches] count] == 3 || sendTouches || resKitMode) {
 			NSMutableSet *b = [NSMutableSet set];
 			NSMutableSet *m = [NSMutableSet set];
 			NSMutableSet *e = [NSMutableSet set];
@@ -172,6 +175,7 @@ static RKWindowManager *sharedWindowManager = nil;
 			// Cancel all existing touches and resend touchesBegan
 			if ([b count] > 0) {
 				[touchOrigins removeAllObjects];
+				numTouches = 0;
 				[self touchesBegan:[event allTouches] withEvent:event];
 			} else if ([m count] > 0) [self touchesMoved:m withEvent:event];
 			if ([e count] > 0) [self touchesEnded:e withEvent:event];
@@ -188,75 +192,128 @@ static RKWindowManager *sharedWindowManager = nil;
 		[touchOrigins setObject:[NSValue valueWithCGPoint:[resKitWindow convertPoint:[touch locationInView:nil]
 																		  fromWindow:touch.window]]
 						 forKey:[NSValue valueWithNonretainedObject:touch]];
+		numTouches++;
 	}
 	if ([touchOrigins count] != 2) zooming = NO;
+	if (numTouches == 3) {
+		resKitMode = !resKitMode;
+		[touchOrigins removeAllObjects];
+		numTouches = 0;
+		NSLog(@"ResKit mode %d", resKitMode);
+	}
 }
 
 - (void)touchesMoved:(NSSet *)touches
 		   withEvent:(UIEvent *)event {
-	if ([touchOrigins count] == 2) {
+	if (resKitMode) {
 		NSArray *ta = [[event allTouches] allObjects];
-		UITouch *t1 = [ta objectAtIndex:0];
-		UITouch *t2 = [ta objectAtIndex:1];
-		CGPoint t1o = [[touchOrigins objectForKey:[NSValue valueWithNonretainedObject:t1]] CGPointValue];
-		CGPoint t2o = [[touchOrigins objectForKey:[NSValue valueWithNonretainedObject:t2]] CGPointValue];
-		CGPoint t1p = [resKitWindow convertPoint:[t1 locationInView:nil]
-									  fromWindow:t1.window];
-		CGPoint t2p = [resKitWindow convertPoint:[t2 locationInView:nil]
-									  fromWindow:t2.window];
 		
-		// Calculate the current and original distance between touches
-		CGFloat ox = t2o.x - t1o.x;
-		CGFloat oy = t2o.y - t1o.y;
-		CGFloat originalDistance = sqrt(ox*ox + oy*oy);
+		// Compute the original and current centroids (averages) of and total distances between touches
+		// This should allow scaling/translation with any number of touches, not just 2
 		
-		CGFloat px = t2p.x - t1p.x;
-		CGFloat py = t2p.y - t1p.y;
-		CGFloat newDistance = sqrt(px*px + py*py);
+		CGPoint prevCentroid = CGPointZero;
+		CGPoint centroid = CGPointZero;
 		
-		if (abs(newDistance - originalDistance) > 10 && !zooming) {
-			zooming = YES;
-			zoomStartScale = scaleFactor;
-			// Reset origins for smooth transition into zooming
-			[touchOrigins setObject:[NSValue valueWithCGPoint:t1p]
-							 forKey:[NSValue valueWithNonretainedObject:t1]];
-			[touchOrigins setObject:[NSValue valueWithCGPoint:t2p]
-							 forKey:[NSValue valueWithNonretainedObject:t2]];
-		} else if (zooming) {
-			CGFloat scale = zoomStartScale * newDistance / originalDistance;
-			if (scale > 1) scale = 1;
-			if (scale < 0.05) scale = 0.05;
-			self.scaleFactor = scale;
+		CGFloat origDistance = 0;
+		CGFloat newDistance = 0;
+		
+		NSUInteger numActiveTouches = [ta count];
+		NSUInteger i = 0;
+		UITouch *prevTouch = nil;
+		CGPoint prevTouchOrig = CGPointZero;
+		CGPoint prevTouchNew = CGPointZero;
+		
+		for (UITouch *t in ta) {
+			CGPoint orig = [[touchOrigins objectForKey:[NSValue valueWithNonretainedObject:t]] CGPointValue];
+			CGPoint prev = [resKitWindow convertPoint:[t previousLocationInView:nil]
+										   fromWindow:t.window];
+			CGPoint new = [resKitWindow convertPoint:[t locationInView:nil]
+										  fromWindow:t.window];
+			
+			// Centroids (position)
+			prevCentroid.x += prev.x;
+			prevCentroid.y += prev.y;
+			centroid.x += new.x;
+			centroid.y += new.y;
+			
+			// Distances (zoom)
+			if (prevTouch) {
+				CGFloat odx = orig.x - prevTouchOrig.x;
+				CGFloat ody = orig.y - prevTouchOrig.y;
+				origDistance += sqrt(odx*odx + ody*ody);
+				
+				CGFloat dx = new.x - prevTouchNew.x;
+				CGFloat dy = new.y - prevTouchNew.y;
+				newDistance += sqrt(dx*dx + dy*dy);
+			}
+			prevTouchOrig = orig;
+			prevTouchNew = new;
+			prevTouch = t;
+			
+			i++;
 		}
-		return;
+		prevCentroid.x /= numActiveTouches;
+		prevCentroid.y /= numActiveTouches;
+		centroid.x /= numActiveTouches;
+		centroid.y /= numActiveTouches;
+		
+		if ([touchOrigins count] == 2) {
+			if (abs(newDistance - origDistance) > 50 && !zooming) {
+				zooming = YES;
+				zoomStartScale = scaleFactor;
+				// Reset origins for smooth transition into zooming
+				for (UITouch *t in ta) {
+					CGPoint pos = [resKitWindow convertPoint:[t locationInView:nil]
+												  fromWindow:t.window];
+					[touchOrigins setObject:[NSValue valueWithCGPoint:pos]
+									 forKey:[NSValue valueWithNonretainedObject:t]];
+				}
+			} else if (zooming) {
+				CGFloat scale = zoomStartScale * newDistance / origDistance;
+				if (scale > 1) scale = 1;
+				if (scale < 0.05) scale = 0.05;
+				self.scaleFactor = scale;
+			}
+		}
+		
+		CGPoint center = deviceCenter;
+		center.x += centroid.x - prevCentroid.x;
+		center.y += centroid.y - prevCentroid.y;
+		//	// Limit to edges
+		//	if (center.x > appWindow.bounds.size.width*scaleFactor/2) center.x = appWindow.bounds.size.width*scaleFactor/2;
+		//	if (center.x < resKitWindow.bounds.size.width - appWindow.bounds.size.width*scaleFactor/2)
+		//		center.x = resKitWindow.bounds.size.width - appWindow.bounds.size.width*scaleFactor/2;
+		//	if (center.y > appWindow.bounds.size.height*scaleFactor/2) center.y = appWindow.bounds.size.height*scaleFactor/2;
+		//	if (center.y < resKitWindow.bounds.size.height - appWindow.bounds.size.height*scaleFactor/2)
+		//		center.y = resKitWindow.bounds.size.height - appWindow.bounds.size.height*scaleFactor/2;
+		self.deviceCenter = center;
 	}
-	UITouch *t = [touches anyObject];
-	CGPoint center = appWindow.center;
-	CGPoint loc = [t locationInView:nil];
-	CGPoint prevLoc = [t previousLocationInView:nil];
-	center.x += loc.x - prevLoc.x;
-	center.y += loc.y - prevLoc.y;
-//	// Limit to edges
-//	if (center.x > appWindow.bounds.size.width*scaleFactor/2) center.x = appWindow.bounds.size.width*scaleFactor/2;
-//	if (center.x < resKitWindow.bounds.size.width - appWindow.bounds.size.width*scaleFactor/2)
-//		center.x = resKitWindow.bounds.size.width - appWindow.bounds.size.width*scaleFactor/2;
-//	if (center.y > appWindow.bounds.size.height*scaleFactor/2) center.y = appWindow.bounds.size.height*scaleFactor/2;
-//	if (center.y < resKitWindow.bounds.size.height - appWindow.bounds.size.height*scaleFactor/2)
-//		center.y = resKitWindow.bounds.size.height - appWindow.bounds.size.height*scaleFactor/2;
-	self.deviceCenter = center;
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+	BOOL doubleTap = YES;
 	for (UITouch *touch in touches) {
 		[touchOrigins removeObjectForKey:[NSValue valueWithNonretainedObject:touch]];
+		
+		if (touch.tapCount != 2) {
+			doubleTap = NO;
+		}
 	}
-	if ([touchOrigins count] != 2) zooming = NO;
+	if ([touches count] == [[event allTouches] count] && numTouches == 1 && doubleTap) { // Double tap to center
+		NSLog(@"Double tap");
+		self.deviceCenter = CGPointMake(resKitWindow.bounds.size.width/2, resKitWindow.bounds.size.height/2);
+	}
+	if ([touchOrigins count] != 2) zooming = NO; // End zooming
+	
+	if ([touches count] == [[event allTouches] count]) numTouches = 0; // Touch sequence finished
 }
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
 	for (UITouch *touch in touches) {
 		[touchOrigins removeObjectForKey:[NSValue valueWithNonretainedObject:touch]];
 	}
 	if ([touchOrigins count] != 2) zooming = NO;
+	
+	if ([touches count] == [[event allTouches] count]) numTouches = 0; // Touch sequence finished
 }
 
 - (void)repositionWindow {

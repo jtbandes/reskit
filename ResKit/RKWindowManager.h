@@ -17,6 +17,8 @@
 	UIWindow *appWindow;
 	BOOL initialized;
 	NSMutableDictionary *touchOrigins;
+	NSUInteger numTouches;
+	BOOL resKitMode;
 	BOOL zooming;
 	CGFloat zoomStartScale;
 	UIImageView *bezelView;
