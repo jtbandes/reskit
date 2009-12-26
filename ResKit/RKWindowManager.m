@@ -8,6 +8,7 @@
 
 #import <CoreGraphics/CoreGraphics.h>
 #import "RKWindowManager.h"
+#import "UIKit-Private.h"
 
 #define RKLog NSLog
 
@@ -15,6 +16,9 @@
 void MethodSwizzle(Class c, SEL orig, SEL new) {
     Method origMethod = class_getInstanceMethod(c, orig);
     Method newMethod = class_getInstanceMethod(c, new);
+	if (!origMethod) {
+		NSLog(@"WARNING: Attempting to swizzle nonexistant method -[%@ %@]", c, NSStringFromSelector(orig));
+	}
     if(class_addMethod(c, orig, method_getImplementation(newMethod), method_getTypeEncoding(newMethod))) {
 		class_replaceMethod(c, new, method_getImplementation(origMethod), method_getTypeEncoding(origMethod));
 	} else {
@@ -30,9 +34,10 @@ void MethodSwizzle(Class c, SEL orig, SEL new) {
 	didReceiveEvent:(UIEvent *)event;
 @end
 
+#pragma mark -
+#pragma mark UIKit hacks
 
-
-@implementation UIApplication (ResKitEventHandling)
+@implementation UIApplication (ResKitHacks)
 - (void)resKit_sendEvent:(UIEvent *)event {
 	// Forward the event to the window manager
 	if (![[RKWindowManager sharedManager] application:(UIApplication *)self
@@ -41,6 +46,27 @@ void MethodSwizzle(Class c, SEL orig, SEL new) {
 	}
 }
 @end
+
+@implementation UIWindowController (ResKitHacks)
+- (CGPoint)resKit_originForViewController:(id)arg1 orientation:(int)arg2 fullScreenLayout:(BOOL)arg3 {
+	NSLog(@"OriginForVC %@ %d %d", arg1, arg2, arg3);
+	CGPoint ret = [self resKit_originForViewController:arg1 orientation:arg2 fullScreenLayout:arg3];
+	NSLog(@"OriginForVC ret %@", NSStringFromCGPoint(ret));
+	ret = CGPointMake(0, 0);
+	NSLog(@"OriginForVC returning %@", NSStringFromCGPoint(ret));
+	return ret;
+}
+@end
+
+@implementation UIWindow (ResKitHacks)
+- (CGRect)resKit_frame {
+	// Report the frame being the same as the bounds (disregarding the transform)
+	return [self bounds];
+}
+@end
+
+#pragma mark -
+#pragma mark Window manager
 
 @implementation RKWindowManager
 
@@ -99,6 +125,14 @@ static RKWindowManager *sharedWindowManager = nil;
 	// Swizzle out the application's sendEvent: method so we can capture touches
 	MethodSwizzle([[UIApplication sharedApplication] class], @selector(sendEvent:), @selector(resKit_sendEvent:));
 	
+	// Perform some specific hacks/fixes
+	MethodSwizzle([UIWindowController class], // Fix fullscreen transitions
+				  @selector(_originForViewController:orientation:fullScreenLayout:),
+				  @selector(resKit_originForViewController:orientation:fullScreenLayout:));
+	MethodSwizzle([UIWindow class], // Fix landscape transitions
+				  @selector(frame),
+				  @selector(resKit_frame));
+	
 	// Initialize ResKit
 	appWindow = [[[UIApplication sharedApplication] keyWindow] retain]; // The main application window being tested
 	//appWindow.windowLevel = (UIWindowLevelNormal + UIWindowLevelAlert) / 2.0; // In between normal and alert, so alerts aren't covered
@@ -147,6 +181,23 @@ static RKWindowManager *sharedWindowManager = nil;
 	didReceiveEvent:(UIEvent *)event {
 	
 	if (event.type == UIEventTypeTouches) {
+		
+#if TARGET_IPHONE_SIMULATOR
+		// Allow top-left hot corner enabling for simulator
+		for (UITouch *t in [event allTouches]) {
+			if (t.phase == UITouchPhaseBegan) {
+				CGPoint loc = [resKitWindow convertPoint:[t locationInView:nil]
+											  fromWindow:t.window];
+				loc.y -= [UIApplication sharedApplication].statusBarFrame.size.height;
+				
+				if (sqrt(loc.x*loc.x + loc.y*loc.y) < 10) { // 10px away from upper left
+					resKitMode = !resKitMode;
+					return YES;
+				}
+			}
+		}
+#endif
+		
 		BOOL sendTouches = NO;
 		for (UITouch *t in [event allTouches]) {
 			if (t.window == resKitWindow) {
@@ -154,6 +205,7 @@ static RKWindowManager *sharedWindowManager = nil;
 				break;
 			}
 			if (resKitMode) {
+				// Force all events into the ResKit window, to make dragging work properly
 				// FML
 				UIView *targetView = [resKitWindow hitTest:[resKitWindow convertPoint:[t locationInView:nil]
 																		   fromWindow:t.window]
@@ -313,9 +365,11 @@ static RKWindowManager *sharedWindowManager = nil;
 			doubleTap = NO;
 		}
 	}
-	if ([touches count] == [[event allTouches] count] && numTouches == 1 && doubleTap) { // Double tap to center
-		NSLog(@"Double tap");
+	if (resKitMode && [touches count] == [[event allTouches] count] &&
+		numTouches == 1 && doubleTap) { // Double tap to center
+		[UIView beginAnimations:nil context:NULL];
 		self.deviceCenter = CGPointMake(resKitWindow.bounds.size.width/2, resKitWindow.bounds.size.height/2);
+		[UIView commitAnimations];
 	}
 	if ([touchOrigins count] != 2) zooming = NO; // End zooming
 	
