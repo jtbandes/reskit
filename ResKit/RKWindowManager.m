@@ -153,6 +153,20 @@ static RKWindowManager *sharedWindowManager = nil;
 				sendTouches = YES;
 				break;
 			}
+			if (resKitMode) {
+				// FML
+				UIView *targetView = [resKitWindow hitTest:[resKitWindow convertPoint:[t locationInView:nil]
+																		   fromWindow:t.window]
+												 withEvent:nil];
+				[t setValue:[NSValue valueWithCGPoint:[resKitWindow convertPoint:[t locationInView:nil]
+																	  fromWindow:t.window]]
+					 forKey:@"_locationInWindow"];
+				[t setValue:[NSValue valueWithCGPoint:[resKitWindow convertPoint:[t previousLocationInView:nil]
+																	  fromWindow:t.window]]
+					 forKey:@"_previousLocationInWindow"];
+				[t setValue:resKitWindow forKey:@"_window"];
+				[t setValue:targetView forKey:@"_view"];
+			}
 		}
 		
 		// Zooming or touching the ResKit window
