@@ -52,6 +52,7 @@
 		164B396110E37D5B0075BE63 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		164B3ECE10E56F440075BE63 /* reskit-bezel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reskit-bezel.png"; sourceTree = "<group>"; };
 		164B3F2B10E578610075BE63 /* reskit-home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reskit-home.png"; sourceTree = "<group>"; };
+		164B429510E61FE60075BE63 /* UIKit-Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIKit-Private.h"; sourceTree = "<group>"; };
 		AA747D9E0F9514B9006C5449 /* ResKit_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResKit_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2AAC07E0554694100DB518D /* libResKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libResKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -119,6 +120,7 @@
 			children = (
 				164B375810E367ED0075BE63 /* RKWindowManager.h */,
 				164B375910E367ED0075BE63 /* RKWindowManager.m */,
+				164B429510E61FE60075BE63 /* UIKit-Private.h */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
