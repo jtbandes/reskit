@@ -49,11 +49,8 @@ void MethodSwizzle(Class c, SEL orig, SEL new) {
 
 @implementation UIWindowController (ResKitHacks)
 - (CGPoint)resKit_originForViewController:(id)arg1 orientation:(int)arg2 fullScreenLayout:(BOOL)arg3 {
-	NSLog(@"OriginForVC %@ %d %d", arg1, arg2, arg3);
 	CGPoint ret = [self resKit_originForViewController:arg1 orientation:arg2 fullScreenLayout:arg3];
-	NSLog(@"OriginForVC ret %@", NSStringFromCGPoint(ret));
-	ret = CGPointMake(0, 0);
-	NSLog(@"OriginForVC returning %@", NSStringFromCGPoint(ret));
+	ret = CGPointMake(0, [UIApplication sharedApplication].statusBarFrame.size.height);
 	return ret;
 }
 @end
